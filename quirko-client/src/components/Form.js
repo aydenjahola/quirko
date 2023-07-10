@@ -35,11 +35,11 @@ class Form extends React.Component {
 
     //If the user has input a prefered alias then we use it, if not, we generate one
     var generatedKey = nanoid(5);
-    var generatedURL = "quirko.me/" + generatedKey;
+    var generatedURL = "https://www.quirko.me/" + generatedKey;
 
     if (this.state.preferedAlias !== "") {
       generatedKey = this.state.preferedAlias;
-      generatedURL = "quirko.me/" + this.state.preferedAlias;
+      generatedURL = "https://www.quirko.me/" + this.state.preferedAlias;
     }
 
     const db = getDatabase();
@@ -136,7 +136,7 @@ class Form extends React.Component {
     return (
       <div className="container">
         <form autoComplete="off">
-          <h3>Qruiko - URL Shortener Tool</h3>
+          <h3>Quirko - URL Shortener Tool</h3>
 
           <div className="form-group">
             <label>Enter Your Long URL</label>
@@ -178,7 +178,7 @@ class Form extends React.Component {
                     : "form-control"
                 }
                 type="text"
-                placeholder="eg. 3fwias (Optional)"
+                placeholder="eg. 9tase (Optional)"
               />
             </div>
             <div
@@ -192,11 +192,7 @@ class Form extends React.Component {
             </div>
           </div>
 
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={this.onSubmit}
-          >
+          <button className="button" type="button" onClick={this.onSubmit}>
             {this.state.loading ? (
               <div>
                 <span
@@ -257,6 +253,13 @@ class Form extends React.Component {
               </div>
             </div>
           )}
+
+          <div className="credits">
+            made by{" "}
+            <a target="_blanck" href="https://github.com/aydenjahola">
+              Ayden
+            </a>
+          </div>
         </form>
       </div>
     );

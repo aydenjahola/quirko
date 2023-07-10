@@ -1,35 +1,42 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
   box-sizing: border-box;
 }
+
 body {
-  background:linear-gradient(#8EC5FC, #E0C3FC);
+  background: linear-gradient(135deg, #053f6f, #00a8cc, #6bf4f2);
   min-height: 100vh;
   display: flex;
-  font-weight: 400;
-  font-family: 'Fira Sans', sans-serif;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
 }
 
-h1,h2,h3,h4,h5,h6,label {
-  font-weight: 500;
-  font-family: 'Fira Sans', sans-serif;
+h1, h2, h3, h4, h5, h6, label {
+  font-weight: 800 !important;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #9e3dff, #ff00cc);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+
+label {
+  display: flex !important;
+}
+
 
 body, html, .App, #root, .auth-wrapper {
   width: 100%;
   height: 100%;
 }
 
-
 .auth-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
-  text-align: left;
-  padding-left: 10px;
-  padding-right: 10px;
-
+  padding: 20px;
 }
 
 .auth-inner {
@@ -52,21 +59,58 @@ body, html, .App, #root, .auth-wrapper {
   margin: 0;
   line-height: 1;
   padding-bottom: 20px;
+  color: #ffffff;
+  font-size: 28px;
 }
 
 .custom-control-label {
   font-weight: 400;
+  color: #ffffff;
 }
 
-
-.form-group{
-  padding: 10px 0 10px 0;
+.form-group {
+  padding: 10px 0;
 }
 
-.generatedurl{
-  margin-top: 20px;
+.generatedurl {
+  margin-top: 30px;
 }
 
 .generatedurl span {
-  font-family: 'Fira Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+
+button {
+  height: 50px;
+  margin: 5px;
+  width: 120px;
+  background: linear-gradient(135deg, #ad73f9, #f770f3);
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  color: #ffffff;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #f770f3, #ad73f9);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+  background: linear-gradient(135deg, #ca51ed, #a042e6);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.credits {
+  color: #000;
+  textDecoration: underline;
+  fontWeight: bold;
 }
