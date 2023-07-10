@@ -31,6 +31,12 @@ body, html, .App, #root, .auth-wrapper {
   height: 100%;
 }
 
+.container {
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .auth-wrapper {
   display: flex;
   justify-content: center;
@@ -83,14 +89,13 @@ body, html, .App, #root, .auth-wrapper {
   text-decoration: underline;
 }
 
-
 button {
   height: 50px;
   margin: 5px;
   width: 120px;
   background: linear-gradient(135deg, #ad73f9, #f770f3);
   border: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif !important;
   font-size: 16px;
   color: #ffffff;
   transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
@@ -109,8 +114,129 @@ button:active {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.credits {
+.footer {
+  left: 0;
+  bottom: 0px;
+  width: 100%;
+  background-color: transparent;
+  padding: 20px;
+  text-align: center;
+  animation: slideUp 0.5s ease-in-out forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.made-by {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #000000;
+}
+
+.social-icons a {
+  display: inline-block;
+  margin: 0 5px;
+  font-size: 20px;
   color: #000;
-  textDecoration: underline;
-  fontWeight: bold;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+  opacity: 1;
+  color: #A7171A;
+}
+
+.social-icons i {
+  font-size: 24px;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  max-width: 225px;
+  max-height: 125px;
+}
+
+
+
+
+/* Media Queries */
+
+@media (max-width: 767.98px) {
+  .container {
+    padding: 10px;
+  }
+
+  .auth-inner {
+    padding: 20px;
+  }
+
+  .auth-wrapper h3 {
+    font-size: 24px;
+  }
+
+  .generatedurl span {
+    font-size: 16px;
+  }
+
+  .button {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .made-by {
+    font-size: 12px;
+  }
+
+  .social-icons i {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .container {
+    padding: 15px;
+  }
+
+  .auth-inner {
+    padding: 30px;
+  }
+
+  .auth-wrapper h3 {
+    font-size: 26px;
+  }
+
+  .generatedurl span {
+    font-size: 20px;
+  }
+
+  .button {
+    height: 45px;
+    font-size: 15px;
+  }
+
+  .made-by {
+    font-size: 14px;
+  }
+
+  .social-icons i {
+    font-size: 22px;
+  }
 }

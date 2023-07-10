@@ -4,6 +4,7 @@ import { getDatabase, child, ref, set, get } from "firebase/database";
 import { isWebUri } from "valid-url";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import logo from "./logo-black.png";
 
 class Form extends React.Component {
   constructor(props) {
@@ -19,9 +20,9 @@ class Form extends React.Component {
     };
   }
 
-  //When the user clicks submit, this will be called
+  // When the user clicks submit, this will be called
   onSubmit = async (event) => {
-    event.preventDefault(); //Prevents the page from reloading when submit is clicked
+    event.preventDefault(); // Prevents the page from reloading when submit is clicked
     this.setState({
       loading: true,
       generatedURL: "",
@@ -33,7 +34,7 @@ class Form extends React.Component {
       return;
     }
 
-    //If the user has input a prefered alias then we use it, if not, we generate one
+    // If the user has input a prefered alias then we use it, if not, we generate one
     var generatedKey = nanoid(5);
     var generatedURL = "https://www.quirko.me/" + generatedKey;
 
@@ -58,12 +59,12 @@ class Form extends React.Component {
       .catch((e) => {});
   };
 
-  //Checks if feild has an error
+  // Checks if feild has an error
   hasError = (key) => {
     return this.state.errors.indexOf(key) !== -1;
   };
 
-  //Save the content of the form as the user is typing!
+  // Save the content of the form as the user is typing!
   handleChange = (e) => {
     const { id, value } = e.target;
     this.setState((prevState) => ({
@@ -76,7 +77,7 @@ class Form extends React.Component {
     var errors = [];
     var errorMessages = this.state.errorMessage;
 
-    //Validate Long URL
+    // Validate Long URL
     if (this.state.longURL.length === 0) {
       errors.push("longURL");
       errorMessages["longURL"] = "Please enter your URL!";
@@ -85,7 +86,7 @@ class Form extends React.Component {
       errorMessages["longURL"] = "Please a URL in the form of https://www....";
     }
 
-    //Prefered Alias
+    // Prefered Alias
     if (this.state.preferedAlias !== "") {
       if (this.state.preferedAlias.length > 7) {
         errors.push("suggestedAlias");
@@ -135,6 +136,9 @@ class Form extends React.Component {
   render() {
     return (
       <div className="container">
+        <div className="logo">
+          <img src={logo} alt="Quirko Logo" />
+        </div>
         <form autoComplete="off">
           <h3>Quirko - URL Shortener Tool</h3>
 
@@ -254,12 +258,34 @@ class Form extends React.Component {
             </div>
           )}
 
-          <div className="credits">
-            made by{" "}
-            <a target="_blanck" href="https://github.com/aydenjahola">
-              Ayden
-            </a>
-          </div>
+          <footer className="footer">
+            <div className="footer-content">
+              <div className="made-by">Made with ❤️ by Ayden</div>
+              <div className="social-icons">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/aydenjahola"
+                >
+                  <i className="fab fa-github"></i>
+                </a>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.twitter.com/Ayden_Jahola"
+                >
+                  <i className="fab fa-twitter"></i>
+                </a>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.linkedin.com/in/ayden-jahola"
+                >
+                  <i className="fab fa-linkedin"></i>
+                </a>
+              </div>
+            </div>
+          </footer>
         </form>
       </div>
     );

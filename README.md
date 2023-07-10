@@ -69,7 +69,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 Activate the virtual environment:
-   - For Mac: `source venv/bin/activate`
+   - For Linux/Mac: `source venv/bin/activate`
    - For Windows: `venv/Scripts/activate`
 
 3. Install the dependencies:
@@ -104,4 +104,4 @@ Contributions are welcome! If you have any suggestions, bug reports, or feature 
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [AGPL License](LICENSE).
