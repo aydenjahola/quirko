@@ -4,9 +4,13 @@ import { getDatabase, child, ref, set, get } from "firebase/database";
 import { isWebUri } from "valid-url";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import logo from "./logo-black.png";
+import "./Form.css";
+import Navbar from "./NavBar";
+import { AuthContext } from "../contexts/AuthContext";
 
 class Form extends React.Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -134,159 +138,161 @@ class Form extends React.Component {
   };
 
   render() {
+    const { currentUser } = this.context;
+
     return (
-      <div className="container">
-        <div className="logo">
-          <img src={logo} alt="Quirko Logo" />
-        </div>
-        <form autoComplete="off">
-          <h3>Quirko - URL Shortener Tool</h3>
+      <div>
+        <Navbar currentUser={currentUser} />
+        <div className="container">
+          <form autoComplete="off">
+            <h3>Quirko - URL Shortener Tool</h3>
 
-          <div className="form-group">
-            <label>Enter Your Long URL</label>
-            <input
-              id="longURL"
-              onChange={this.handleChange}
-              value={this.state.longURL}
-              type="url"
-              required
-              className={
-                this.hasError("longURL")
-                  ? "form-control is-invalid"
-                  : "form-control"
-              }
-              placeholder="https://www..."
-            />
-          </div>
-          <div
-            className={
-              this.hasError("longURL") ? "text-danger" : "visually-hidden"
-            }
-          >
-            {this.state.errorMessage.longURL}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="basic-url">Your Mini URL</label>
-            <div className="input-group mb-3">
-              <div className="input-group-prepend">
-                <span className="input-group-text">quirko.me/</span>
-              </div>
+            <div className="form-group">
+              <label>Enter Your Long URL</label>
               <input
-                id="preferedAlias"
+                id="longURL"
                 onChange={this.handleChange}
-                value={this.state.preferedAlias}
+                value={this.state.longURL}
+                type="url"
+                required
                 className={
-                  this.hasError("preferedAlias")
+                  this.hasError("longURL")
                     ? "form-control is-invalid"
                     : "form-control"
                 }
-                type="text"
-                placeholder="eg. 9tase (Optional)"
+                placeholder="https://www..."
               />
             </div>
             <div
               className={
-                this.hasError("suggestedAlias")
-                  ? "text-danger"
-                  : "visually-hidden"
+                this.hasError("longURL") ? "text-danger" : "visually-hidden"
               }
             >
-              {this.state.errorMessage.suggestedAlias}
+              {this.state.errorMessage.longURL}
             </div>
-          </div>
 
-          <button className="button" type="button" onClick={this.onSubmit}>
-            {this.state.loading ? (
-              <div>
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-              </div>
-            ) : (
-              <div>
-                <span
-                  className="visually-hidden spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span>Shorten URL</span>
-              </div>
-            )}
-          </button>
-
-          {this.state.generatedURL === "" ? (
-            <div></div>
-          ) : (
-            <div className="generatedurl">
-              <span>Your generated URL is: </span>
+            <div className="form-group">
+              <label htmlFor="basic-url">Your Mini URL</label>
               <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">quirko.me/</span>
+                </div>
                 <input
-                  disabled
+                  id="preferedAlias"
+                  onChange={this.handleChange}
+                  value={this.state.preferedAlias}
+                  className={
+                    this.hasError("preferedAlias")
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
                   type="text"
-                  value={this.state.generatedURL}
-                  className="form-control"
-                  placeholder="Recipient's username"
-                  aria-label="Recipient's username"
-                  aria-describedby="basic-addon2"
+                  placeholder="eg. 9tase (Optional)"
                 />
-                <div className="input-group-append">
-                  <OverlayTrigger
-                    key={"top"}
-                    placement={"top"}
-                    overlay={
-                      <Tooltip id={`tooltip-${"top"}`}>
-                        {this.state.toolTipMessage}
-                      </Tooltip>
-                    }
-                  >
-                    <button
-                      onClick={() => this.copyToClipBoard()}
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Tooltip on top"
-                      className="btn btn-outline-secondary"
-                      type="button"
+              </div>
+              <div
+                className={
+                  this.hasError("suggestedAlias")
+                    ? "text-danger"
+                    : "visually-hidden"
+                }
+              >
+                {this.state.errorMessage.suggestedAlias}
+              </div>
+            </div>
+
+            <button className="button" type="button" onClick={this.onSubmit}>
+              {this.state.loading ? (
+                <div>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </div>
+              ) : (
+                <div>
+                  <span
+                    className="visually-hidden spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <span>Shorten URL</span>
+                </div>
+              )}
+            </button>
+
+            {this.state.generatedURL === "" ? (
+              <div></div>
+            ) : (
+              <div className="generatedurl">
+                <span>Your generated URL is: </span>
+                <div className="input-group mb-3">
+                  <input
+                    disabled
+                    type="text"
+                    value={this.state.generatedURL}
+                    className="form-control"
+                    placeholder="Recipient's username"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                  />
+                  <div className="input-group-append">
+                    <OverlayTrigger
+                      key={"top"}
+                      placement={"top"}
+                      overlay={
+                        <Tooltip id={`tooltip-${"top"}`}>
+                          {this.state.toolTipMessage}
+                        </Tooltip>
+                      }
                     >
-                      Copy
-                    </button>
-                  </OverlayTrigger>
+                      <button
+                        onClick={() => this.copyToClipBoard()}
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Tooltip on top"
+                        className="btn btn-outline-secondary"
+                        type="button"
+                      >
+                        Copy
+                      </button>
+                    </OverlayTrigger>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          <footer className="footer">
-            <div className="footer-content">
-              <div className="made-by">Made with ❤️ by Ayden</div>
-              <div className="social-icons">
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://github.com/aydenjahola"
-                >
-                  <i className="fab fa-github"></i>
-                </a>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.twitter.com/Ayden_Jahola"
-                >
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.linkedin.com/in/ayden-jahola"
-                >
-                  <i className="fab fa-linkedin"></i>
-                </a>
+            <footer className="footer">
+              <div className="footer-content">
+                <div className="made-by">Made with ❤️ by Ayden</div>
+                <div className="social-icons">
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://github.com/aydenjahola"
+                  >
+                    <i className="fab fa-github"></i>
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.twitter.com/Ayden_Jahola"
+                  >
+                    <i className="fab fa-twitter"></i>
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.linkedin.com/in/ayden-jahola"
+                  >
+                    <i className="fab fa-linkedin"></i>
+                  </a>
+                </div>
               </div>
-            </div>
-          </footer>
-        </form>
+            </footer>
+          </form>
+        </div>
       </div>
     );
   }
