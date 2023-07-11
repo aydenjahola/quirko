@@ -2,6 +2,9 @@
 
 * {
   box-sizing: border-box;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
 }
 
 body {
@@ -10,6 +13,18 @@ body {
   display: flex;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
+  animation-name: slideIn;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 h1, h2, h3, h4, h5, h6, label {
@@ -19,12 +34,21 @@ h1, h2, h3, h4, h5, h6, label {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 label {
   display: flex !important;
 }
-
 
 body, html, .App, #root, .auth-wrapper {
   width: 100%;
@@ -35,6 +59,7 @@ body, html, .App, #root, .auth-wrapper {
   width: 90%;
   max-width: 400px;
   margin: 0 auto;
+  animation-name: fadeIn;
 }
 
 .auth-wrapper {
@@ -43,6 +68,18 @@ body, html, .App, #root, .auth-wrapper {
   align-items: center;
   flex-direction: column;
   padding: 20px;
+  animation-name: slideUp;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .auth-inner {
@@ -53,6 +90,7 @@ body, html, .App, #root, .auth-wrapper {
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
   transition: all .3s;
+  animation-name: fadeIn;
 }
 
 .auth-wrapper .form-control:focus {
@@ -80,6 +118,7 @@ body, html, .App, #root, .auth-wrapper {
 
 .generatedurl {
   margin-top: 30px;
+  animation-name: fadeIn;
 }
 
 .generatedurl span {
@@ -89,30 +128,74 @@ body, html, .App, #root, .auth-wrapper {
   text-decoration: underline;
 }
 
-button {
-  height: 50px;
-  margin: 5px;
-  width: 120px;
-  background: linear-gradient(135deg, #ad73f9, #f770f3);
-  border: none;
-  font-family: 'Poppins', sans-serif !important;
-  font-size: 16px;
-  color: #ffffff;
-  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-  border-radius: 5px;
+
+
+.button {
+  font-family: 'Poppins', sans-serif;
+  display: inline-block;
+  padding: 12px 24px;
+  border: 1px solid #4f4f4f;
+  border-radius: 8px;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  font-size: 20px;
+  color: black;
+  z-index: 1;
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-button:hover {
-  background: linear-gradient(135deg, #f770f3, #ad73f9);
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+.button:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
 }
 
-button:active {
-  background: linear-gradient(135deg, #ca51ed, #a042e6);
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.button:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: #39bda7;
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
 }
+
+.button:hover {
+  color: #ffffff;
+  border: 1px solid #39bda7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover:before {
+  top: -50%;
+  background-color: #39bda7;
+  transform: translateX(-50%) scaleY(1.4) scaleX(0.7);
+}
+
+.button:hover:after {
+  top: -60%;
+  background-color: #39bda7;
+  transform: translateX(-50%) scaleY(1.4) scaleX(0.7);
+}
+
+  
+
 
 .footer {
   left: 0;
@@ -121,16 +204,7 @@ button:active {
   background-color: transparent;
   padding: 20px;
   text-align: center;
-  animation: slideUp 0.5s ease-in-out forwards;
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
+  animation-name: slideUp;
 }
 
 .footer-content {
@@ -167,6 +241,7 @@ button:active {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  animation-name: fadeIn;
 }
 
 .logo img {
