@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Card, Form, Button, Alert, Nav } from "react-bootstrap";
+import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import Navbar from "./NavBar";
@@ -9,7 +9,7 @@ export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+  const { signup, signupAnonymously } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -64,10 +64,21 @@ export default function SignUp() {
               disabled={loading}
               className="w-100"
               type="submit"
-              style={{ padding: "0.5rem 1rem", marginTop: "30px" }}
+              style={{ padding: "0.5rem 1rem", marginTop: "15px" }}
             >
               Sign Up
             </Button>
+            <div
+              className="w-100 text-center mt-2"
+              onClick={signupAnonymously}
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              <Link to="/">continue as guest</Link>
+            </div>
           </Form>
         </Card.Body>
       </Card>
