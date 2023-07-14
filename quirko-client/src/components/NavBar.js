@@ -1,12 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import logo from "./logo-no-background.png";
 import { AuthContext } from "../contexts/AuthContext";
+import { database } from "../index";
 import "./Navbar.css";
 
 function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
   const history = useHistory();
+
+  useEffect(() => {
+    if (currentUser) {
+      const userRef = database.ref(`users/${currentUser.uid}`);
+      userRef.on("value", (snapshot) => {
+        const userData = snapshot.val();
+        if (userData && userData.username) {
+          setUsername(userData.username);
+        }
+      });
+    }
+  }, [currentUser]);
 
   const handleProfileClick = () => {
     history.push("/update-profile");
@@ -24,20 +38,24 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <a href="/">
+        <Link to="/">
           <img src={logo} alt="Quirko Logo" />
-        </a>
+        </Link>
       </div>
       <div className="navbar-links">
         {currentUser ? (
           <>
-            <span
-              className="navbar-link"
-              onClick={handleProfileClick}
-              style={{ cursor: "pointer" }}
-            >
-              Logged in as {currentUser.email}
-            </span>
+            {currentUser.isAnonymous ? (
+              <span className="navbar-link">Logged in as Anonymous</span>
+            ) : (
+              <span
+                className="navbar-link"
+                onClick={handleProfileClick}
+                style={{ cursor: "pointer" }}
+              >
+                Logged in as {username}
+              </span>
+            )}
             <button
               className="navbar-link logout-button"
               onClick={handleLogout}

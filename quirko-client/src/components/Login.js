@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Navbar from "./NavBar";
 
 export default function LogIn() {
   const emailRef = useRef();
@@ -27,6 +28,7 @@ export default function LogIn() {
 
   return (
     <>
+      <Navbar />
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Login</h2>
@@ -42,7 +44,12 @@ export default function LogIn() {
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
 
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button
+              disabled={loading}
+              className="w-100"
+              type="submit"
+              style={{ padding: "0.5rem 1rem", marginTop: "30px" }}
+            >
               Login
             </Button>
           </Form>

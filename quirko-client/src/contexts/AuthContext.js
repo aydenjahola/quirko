@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { auth } from "../index";
+import { auth, database } from "../index";
 
 const AuthContext = React.createContext();
 
@@ -11,8 +11,27 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
-  function signup(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password);
+  function signup(email, password, username) {
+    return auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        return updateUsername(result.user, username);
+      });
+  }
+
+  function updateUsername(user, username) {
+    return database
+      .ref(`users/${user.uid}`)
+      .update({
+        username: username,
+      })
+      .then(() => {
+        setCurrentUser((prevUser) => ({ ...prevUser, username: username }));
+      });
+  }
+
+  function signupAnonymously() {
+    return auth.signInAnonymously();
   }
 
   function login(email, password) {
@@ -48,8 +67,10 @@ export function AuthProvider({ children }) {
     currentUser,
     login,
     signup,
+    signupAnonymously,
     logout,
     resetPassword,
+    updateUsername,
     updateEmail,
     updatePassword,
   };

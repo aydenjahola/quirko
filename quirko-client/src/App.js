@@ -20,8 +20,7 @@ function App() {
                   path="/update-profile"
                   component={UpdateProfile}
                 />
-                <Route exact path="/" component={Form} />
-                <Route path="/app" component={Form} />
+                <Route exact path={["/", "/app"]} component={Form} />
                 <Route path="/signup" component={SignUp} />
                 <Route path="/login" component={LogIn} />
                 <Route path="/forgot-password" component={ForgotPassword} />

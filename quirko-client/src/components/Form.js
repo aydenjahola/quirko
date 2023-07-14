@@ -1,12 +1,13 @@
 import React from "react";
 import { nanoid } from "nanoid";
-import { getDatabase, child, ref, set, get } from "firebase/database";
+import { getDatabase, ref, set, get, child } from "firebase/database";
 import { isWebUri } from "valid-url";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import "./Form.css";
 import Navbar from "./NavBar";
 import { AuthContext } from "../contexts/AuthContext";
+import HistoryViewer from "./HistoryViewer";
 
 class Form extends React.Component {
   static contextType = AuthContext;
@@ -21,7 +22,13 @@ class Form extends React.Component {
       errors: [],
       errorMessage: {},
       toolTipMessage: "Copy To Clip Board",
+      history: [],
     };
+  }
+
+  // When the component mounts, fetch the user's history
+  componentDidMount() {
+    this.fetchUserHistory();
   }
 
   // When the user clicks submit, this will be called
@@ -32,13 +39,14 @@ class Form extends React.Component {
       generatedURL: "",
     });
 
-    // Validate the input the user has sumbitted
+    // Validate the input the user has submitted
     var isFormValid = await this.validateInput();
     if (!isFormValid) {
+      this.setState({ loading: false });
       return;
     }
 
-    // If the user has input a prefered alias then we use it, if not, we generate one
+    // If the user has input a preferred alias, then use it; otherwise, generate one
     var generatedKey = nanoid(5);
     var generatedURL = "https://www.quirko.me/" + generatedKey;
 
@@ -59,11 +67,16 @@ class Form extends React.Component {
           generatedURL: generatedURL,
           loading: false,
         });
+
+        this.addHistoryItem(generatedKey, generatedURL); // Add history item to the user's history
       })
-      .catch((e) => {});
+      .catch((e) => {
+        console.error("Failed to create a short URL:", e);
+        this.setState({ loading: false });
+      });
   };
 
-  // Checks if feild has an error
+  // Checks if field has an error
   hasError = (key) => {
     return this.state.errors.indexOf(key) !== -1;
   };
@@ -87,18 +100,19 @@ class Form extends React.Component {
       errorMessages["longURL"] = "Please enter your URL!";
     } else if (!isWebUri(this.state.longURL)) {
       errors.push("longURL");
-      errorMessages["longURL"] = "Please a URL in the form of https://www....";
+      errorMessages["longURL"] =
+        "Please enter a URL in the form of https://www....";
     }
 
-    // Prefered Alias
+    // Preferred Alias
     if (this.state.preferedAlias !== "") {
       if (this.state.preferedAlias.length > 7) {
         errors.push("suggestedAlias");
         errorMessages["suggestedAlias"] =
-          "Please Enter an Alias less than 7 Characters";
+          "Please enter an alias less than 7 characters";
       } else if (this.state.preferedAlias.indexOf(" ") >= 0) {
         errors.push("suggestedAlias");
-        errorMessages["suggestedAlias"] = "Spaces are not allowed in URLS";
+        errorMessages["suggestedAlias"] = "Spaces are not allowed in URLs";
       }
 
       var keyExists = await this.checkKeyExists();
@@ -106,7 +120,7 @@ class Form extends React.Component {
       if (keyExists.exists()) {
         errors.push("suggestedAlias");
         errorMessages["suggestedAlias"] =
-          "The Alias you have entered already exists! Please enter another one =-)";
+          "The alias you have entered already exists! Please enter another one.";
       }
     }
 
@@ -130,6 +144,51 @@ class Form extends React.Component {
     });
   };
 
+  addHistoryItem = (generatedKey, generatedURL) => {
+    const currentUser = this.context.currentUser;
+    const db = getDatabase();
+
+    if (currentUser) {
+      const uid = currentUser.uid;
+      const historyRef = ref(db, `userHistory/${uid}/${generatedKey}`);
+
+      set(historyRef, {
+        generatedKey: generatedKey,
+        longURL: this.state.longURL,
+        preferedAlias: this.state.preferedAlias,
+        generatedURL: generatedURL,
+      })
+        .then(() => {
+          console.log("History item added successfully");
+          this.fetchUserHistory(); // Fetch the updated user's history
+        })
+        .catch((error) => {
+          console.error("Error adding history item:", error);
+        });
+    }
+  };
+
+  fetchUserHistory = async () => {
+    const currentUser = this.context.currentUser;
+    const db = getDatabase();
+
+    if (currentUser) {
+      const uid = currentUser.uid;
+      const historyRef = ref(db, `userHistory/${uid}`);
+
+      try {
+        const historySnapshot = await get(historyRef);
+        if (historySnapshot.exists()) {
+          const historyData = historySnapshot.val();
+          const history = Object.values(historyData);
+          this.setState({ history: history });
+        }
+      } catch (error) {
+        console.error("Error fetching user history:", error);
+      }
+    }
+  };
+
   copyToClipBoard = () => {
     navigator.clipboard.writeText(this.state.generatedURL);
     this.setState({
@@ -139,6 +198,7 @@ class Form extends React.Component {
 
   render() {
     const { currentUser } = this.context;
+    const hasHistory = this.state.history.length > 0; // Check if user has history
 
     return (
       <div>
@@ -292,6 +352,11 @@ class Form extends React.Component {
               </div>
             </footer>
           </form>
+        </div>
+        <div className="history-container">
+          {currentUser && hasHistory && (
+            <HistoryViewer history={this.state.history} />
+          )}
         </div>
       </div>
     );

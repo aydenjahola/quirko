@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import "firebase/compat/database";
 
 const app = firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -17,7 +18,7 @@ const app = firebase.initializeApp({
 });
 
 export const auth = app.auth();
-export default app;
+export const database = app.database();
 
 ReactDOM.render(
   <BrowserRouter>
