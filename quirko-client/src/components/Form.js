@@ -48,11 +48,12 @@ class Form extends React.Component {
 
     // If the user has input a preferred alias, then use it; otherwise, generate one
     var generatedKey = nanoid(5);
-    var generatedURL = "https://www.quirko.me/" + generatedKey;
+    var generatedURL = "https://short.aydenjahola.com/" + generatedKey;
 
     if (this.state.preferedAlias !== "") {
       generatedKey = this.state.preferedAlias;
-      generatedURL = "https://www.quirko.me/" + this.state.preferedAlias;
+      generatedURL =
+        "https://short.aydenjahola.com/" + this.state.preferedAlias;
     }
 
     const db = getDatabase();
@@ -235,7 +236,9 @@ class Form extends React.Component {
               <label htmlFor="basic-url">Your Mini URL</label>
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
-                  <span className="input-group-text">quirko.me/</span>
+                  <span className="input-group-text">
+                    short.aydenjahola.com/
+                  </span>
                 </div>
                 <input
                   id="preferedAlias"
